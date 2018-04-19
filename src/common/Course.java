@@ -1,4 +1,4 @@
-
+package common;
 public class Course {
     private String classNum;
     private int homework;
