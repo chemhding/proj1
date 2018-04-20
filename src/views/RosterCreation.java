@@ -21,6 +21,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -63,7 +64,7 @@ public class RosterCreation extends JDialog {
                 Writer writer = new Writer(path);
                 String className = null;
                 try {
-                    className = tfClassName.getText(0, 5);
+                    className = tfClassName.getText(0, 5).toUpperCase();
                 } catch (BadLocationException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -73,9 +74,16 @@ public class RosterCreation extends JDialog {
                 int examNumber = Integer.valueOf((String) cbExams.getSelectedItem());
                 int sitesNumber = Integer.valueOf((String) cbSites.getSelectedItem());
                 Course course = new Course(className, homeworkNumber, projectsNumber, examNumber, sitesNumber);
+
+                int[] studentsNumberPerSite = new int[sitesNumber];
+                for (int i = 0; i < sitesNumber; i++) {
+                    int j = i + 1;
+                    studentsNumberPerSite[i] = Integer
+                            .parseInt(JOptionPane.showInputDialog("Please enter Students number of site " + j));
+                }
+                course.setStudents(studentsNumberPerSite);
                 writer.addString(course.toString());
 
-                System.out.println(course);
                 dispose();
             }
         });

@@ -82,7 +82,11 @@ public class Course {
 
     @Override
     public String toString() {
-        return getClassName() + " " + getHomework() + " " + getProjects() + " " + getExams() + " " + getSites();
+        String studentsNumbers = "";
+        for (int i = 0; i < students.length; i++)
+            studentsNumbers += students[i] + " ";
+        return getClassName() + " " + getHomework() + " " + getProjects() + " " + getExams() + " " + getSites() + " "
+                + studentsNumbers;
     }
 
 }

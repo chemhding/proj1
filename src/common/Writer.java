@@ -11,7 +11,7 @@ public class Writer {
 
     public Writer(String destinationPath) {
         try {
-            bw = new BufferedWriter(new FileWriter(destinationPath));
+            bw = new BufferedWriter(new FileWriter(destinationPath, true));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -21,8 +21,8 @@ public class Writer {
     public void addString(String toBeWritten) {
         try {
             bw.write(toBeWritten);
-            bw.append(" ");
             bw.newLine();
+            bw.write("");
             bw.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
