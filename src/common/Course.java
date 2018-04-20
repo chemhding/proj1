@@ -1,14 +1,15 @@
 package common;
+
 public class Course {
-    private String classNum;
+    private String className;
     private int homework;
     private int projects;
     private int exams;
     private int sites;
     private int[] students;
 
-    public Course(String classNum) {
-        this.classNum = classNum;
+    public Course(String className) {
+        this.className = className;
         homework = 10;
         projects = 1;
         exams = 2;
@@ -17,7 +18,7 @@ public class Course {
     }
 
     public Course(String c, int h, int p, int e, int s) {
-        classNum = c;
+        className = c;
         homework = h;
         projects = p;
         exams = e;
@@ -25,12 +26,12 @@ public class Course {
         students = new int[sites];
     }
 
-    public String getClassNum() {
-        return classNum;
+    public String getClassName() {
+        return className;
     }
 
-    public void setClassNum(String classNum) {
-        this.classNum = classNum;
+    public void setClassName(String classNum) {
+        this.className = classNum;
     }
 
     public int getHomework() {
@@ -77,6 +78,11 @@ public class Course {
             length = students.length;
         for (int i = 0; i < length; i++)
             this.students[i] = students[i];
+    }
+
+    @Override
+    public String toString() {
+        return getClassName() + " " + getHomework() + " " + getProjects() + " " + getExams() + " " + getSites();
     }
 
 }
