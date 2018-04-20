@@ -9,7 +9,9 @@ import javax.swing.UIManager;
 import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.BoxLayout;
@@ -17,8 +19,14 @@ import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import common.Writer;
 
 public class Main implements ActionListener {
 
@@ -134,6 +142,7 @@ public class Main implements ActionListener {
     public void addListener() {
         btnRosterCreation.addActionListener(this);
         btnExit.addActionListener(this);
+        btnGradeInput.addActionListener(this);
     }
 
     @Override
@@ -142,6 +151,30 @@ public class Main implements ActionListener {
             RosterCreation rc = new RosterCreation(frame);
             rc.setModal(true);
             rc.setVisible(true);
+        } else if (ae.getSource() == btnGradeInput) {
+            JFileChooser jf = new JFileChooser();
+            jf.setCurrentDirectory(new File(System.getProperty("user.home")));
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("*.text", "txt");
+            jf.addChoosableFileFilter(filter);
+            int result = jf.showOpenDialog(frame);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File gradeFile = jf.getSelectedFile();
+                // String path = gradeFile.getAbsolutePath();
+                // System.out.println(path);
+                try {
+                    Scanner scan = new Scanner(gradeFile);
+                    while (scan.hasNextLine()) {
+                        String line = scan.nextLine();
+                        Writer writer = new Writer("src/resources/students_grades.txt");
+                        writer.addString(line);
+                    }
+                    JOptionPane.showMessageDialog(jf, "Done!", "Congratulations", 1);
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
         } else if (ae.getSource() == btnExit) {
             System.exit(0);
         }
