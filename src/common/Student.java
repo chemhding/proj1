@@ -1,13 +1,14 @@
 package common;
+
 public class Student {
     private String firstName;
     private String lastName;
     private String SID;
     private int siteNum;
     private Course course;
-    private double[] hwGrades;
-    private double[] examGrades;
-    private double[] projGrades;
+    private int[] hwGrades;
+    private int[] examGrades;
+    private int[] projGrades;
 
     public Student(String fn, String ln, String sid, int stn, Course course) {
         firstName = fn;
@@ -15,9 +16,9 @@ public class Student {
         SID = sid;
         siteNum = stn;
         this.course = course;
-        hwGrades = new double[course.getHomework()];
-        examGrades = new double[course.getExams()];
-        projGrades = new double[course.getProjects()];
+        hwGrades = new int[course.getHomework()];
+        examGrades = new int[course.getExams()];
+        projGrades = new int[course.getProjects()];
     }
 
     public String getFirstName() {
@@ -60,11 +61,11 @@ public class Student {
         this.course = course;
     }
 
-    public double[] getHwGrades() {
+    public int[] getHwGrades() {
         return hwGrades;
     }
 
-    public void setHwGrades(double[] hwGrades) {
+    public void setHwGrades(int[] hwGrades) {
         int length;
         if (this.hwGrades.length <= hwGrades.length)
             length = this.hwGrades.length;
@@ -74,11 +75,11 @@ public class Student {
             this.hwGrades[i] = hwGrades[i];
     }
 
-    public double[] getExamGrades() {
+    public int[] getExamGrades() {
         return examGrades;
     }
 
-    public void setExamGrades(double[] examGrades) {
+    public void setExamGrades(int[] examGrades) {
         int length;
         if (this.examGrades.length <= examGrades.length)
             length = this.examGrades.length;
@@ -88,11 +89,11 @@ public class Student {
             this.examGrades[i] = examGrades[i];
     }
 
-    public double[] getProjGrades() {
+    public int[] getProjGrades() {
         return projGrades;
     }
 
-    public void setProjGrades(double[] projGrades) {
+    public void setProjGrades(int[] projGrades) {
         int length;
         if (this.projGrades.length <= projGrades.length)
             length = this.projGrades.length;
@@ -100,5 +101,17 @@ public class Student {
             length = projGrades.length;
         for (int i = 0; i < length; i++)
             this.projGrades[i] = projGrades[i];
+    }
+
+    @Override
+    public String toString() {
+        String toReturn = firstName + " " + lastName + " " + SID + " " + course.getClassName() + " " + siteNum + " ";
+        for (int i = 0; i < hwGrades.length; i++)
+            toReturn += hwGrades[i] + " ";
+        for (int j = 0; j < projGrades.length; j++)
+            toReturn += projGrades[j] + " ";
+        for (int k = 0; k < examGrades.length; k++)
+            toReturn += examGrades[k] + " ";
+        return toReturn;
     }
 }

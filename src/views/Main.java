@@ -21,11 +21,14 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import common.FileScanner;
+import common.Student;
 import common.Writer;
 
 public class Main implements ActionListener {
@@ -143,6 +146,7 @@ public class Main implements ActionListener {
         btnRosterCreation.addActionListener(this);
         btnExit.addActionListener(this);
         btnGradeInput.addActionListener(this);
+        btnRecordSearch.addActionListener(this);
     }
 
     @Override
@@ -159,22 +163,31 @@ public class Main implements ActionListener {
             int result = jf.showOpenDialog(frame);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File gradeFile = jf.getSelectedFile();
-                // String path = gradeFile.getAbsolutePath();
+                String path = gradeFile.getAbsolutePath();
                 // System.out.println(path);
-                try {
-                    Scanner scan = new Scanner(gradeFile);
-                    while (scan.hasNextLine()) {
-                        String line = scan.nextLine();
-                        Writer writer = new Writer("src/resources/students_grades.txt");
-                        writer.addString(line);
-                    }
-                    JOptionPane.showMessageDialog(jf, "Done!", "Congratulations", 1);
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                FileScanner fileScan = new FileScanner("src/resources/class_roster.txt", path);
+                Writer write = new Writer("src/resources/students_grades.txt");
+                ArrayList<Student> students = fileScan.getStudents();
+                for (int i = 0; i < students.size(); i++)
+                    write.addString(students.get(i).toString());
+                write.close();
+                // try {
+                // Scanner scan = new Scanner(gradeFile);
+                // while (scan.hasNextLine()) {
+                // String line = scan.nextLine();
+                // Writer writer = new Writer("src/resources/students_grades.txt");
+                // writer.addString(line);
+                // }
+                JOptionPane.showMessageDialog(jf, "Grade input completed!", "Congratulations", 1);
+                // } catch (FileNotFoundException e) {
+                // // TODO Auto-generated catch block
+                // e.printStackTrace();
+                // }
 
             }
+        } else if (ae.getSource() == btnRecordSearch) {
+            RecordSearch rs = new RecordSearch(frame);
+            rs.setVisible(true);
         } else if (ae.getSource() == btnExit) {
             System.exit(0);
         }

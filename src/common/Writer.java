@@ -23,6 +23,15 @@ public class Writer {
             bw.write(toBeWritten);
             bw.newLine();
             bw.write("");
+            // bw.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void close() {
+        try {
             bw.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block

@@ -69,29 +69,34 @@ public class RosterCreation extends JDialog {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                int homeworkNumber = Integer.valueOf((String) cbHomework.getSelectedItem());
-                int projectsNumber = Integer.valueOf((String) cbProjects.getSelectedItem());
-                int examNumber = Integer.valueOf((String) cbExams.getSelectedItem());
-                int sitesNumber = Integer.valueOf((String) cbSites.getSelectedItem());
-                Course course = new Course(className, homeworkNumber, projectsNumber, examNumber, sitesNumber);
+                if (className == null)
+                    JOptionPane.showMessageDialog(contentPanel, "Please enter class name", "Wrong", 0);
+                else {
+                    int homeworkNumber = Integer.valueOf((String) cbHomework.getSelectedItem());
+                    int projectsNumber = Integer.valueOf((String) cbProjects.getSelectedItem());
+                    int examNumber = Integer.valueOf((String) cbExams.getSelectedItem());
+                    int sitesNumber = Integer.valueOf((String) cbSites.getSelectedItem());
+                    Course course = new Course(className, homeworkNumber, projectsNumber, examNumber, sitesNumber);
 
-                int[] studentsNumberPerSite = new int[sitesNumber];
-                for (int i = 0; i < sitesNumber; i++) {
-                    int j = i + 1;
-                    studentsNumberPerSite[i] = Integer
-                            .parseInt(JOptionPane.showInputDialog("Please enter Students number of site " + j));
+                    int[] studentsNumberPerSite = new int[sitesNumber];
+                    for (int i = 0; i < sitesNumber; i++) {
+                        int j = i + 1;
+                        studentsNumberPerSite[i] = Integer
+                                .parseInt(JOptionPane.showInputDialog("Please enter Students number of site " + j));
+                    }
+                    course.setStudents(studentsNumberPerSite);
+                    writer.addString(course.toString());
+                    writer.close();
+
+                    dispose();
                 }
-                course.setStudents(studentsNumberPerSite);
-                writer.addString(course.toString());
-
-                dispose();
             }
         });
     }
 
     private void initialize(JFrame parent) {
         setTitle("Create roster");
-        setSize(516, 318);
+        setSize(600, 520);
         setResizable(false);
 
         getContentPane().setLayout(new BorderLayout());
