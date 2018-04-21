@@ -33,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 
 import common.*;
 import common.FileScanner.SortType;
+import jdk.nashorn.internal.scripts.JO;
 
 public class RecordSearch extends JFrame {
 
@@ -47,15 +48,28 @@ public class RecordSearch extends JFrame {
     private JRadioButton rdbtnLastName;
     private JRadioButton rdbtnSid;
 
+    private ArrayList<Student> studentsArrayList = new ArrayList<Student>();
+    private int currentPosition;
+    private JLabel lblByHowMany;
+    private JTextField tfHowMany;
+    private final ButtonGroup bgTravelList = new ButtonGroup();
+    private JRadioButton rdbtnForward;
+    private JRadioButton rdbtnBackward;
+    private JButton btnTravelOk;
+
     /**
      * Create the frame.
      */
     public RecordSearch(JFrame parent) {
+        setTitle("Record Search");
 
         initialize(parent);
         fileScan = new FileScanner("src/resources/class_roster.txt", "src/resources/fakedata.txt");
-        // System.out.println(fileScan.getStudents().get(2).getFirstName() + " line
-        // 56");
+        studentsArrayList = fileScan.SortedStudentsArrayList();
+        currentPosition = 0;
+        System.out.println(studentsArrayList.size());
+        for (int o = 0; o < 10; o++)
+            System.out.println(studentsArrayList.get(o));
         addListener();
     }
 
@@ -87,28 +101,66 @@ public class RecordSearch extends JFrame {
         btnSearchOk = new JButton("OK");
 
         JScrollPane scpTable = new JScrollPane();
+
+        JLabel lblTraverlingList = new JLabel("Traverling list:");
+
+        rdbtnForward = new JRadioButton("Forward");
+        bgTravelList.add(rdbtnForward);
+        rdbtnForward.setSelected(true);
+
+        rdbtnBackward = new JRadioButton("Backward");
+        bgTravelList.add(rdbtnBackward);
+
+        lblByHowMany = new JLabel("by how many?");
+
+        tfHowMany = new JTextField();
+        tfHowMany.setColumns(5);
+
+        btnTravelOk = new JButton("OK");
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
                 .createSequentialGroup().addContainerGap()
                 .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-                        .addComponent(scpTable, GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
-                        .addGroup(gl_contentPane.createSequentialGroup().addComponent(lblSearchBy)
-                                .addPreferredGap(ComponentPlacement.UNRELATED).addComponent(rdbtnFirstName)
-                                .addPreferredGap(ComponentPlacement.RELATED).addComponent(rdbtnLastName)
-                                .addPreferredGap(ComponentPlacement.RELATED).addComponent(rdbtnSid))
-                        .addGroup(gl_contentPane.createSequentialGroup()
-                                .addComponent(tfSearchBy, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18).addComponent(btnSearchOk)))
+                        .addComponent(scpTable, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                        .addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup().addGroup(gl_contentPane
+                                .createParallelGroup(Alignment.LEADING)
+                                .addGroup(gl_contentPane.createSequentialGroup().addComponent(lblSearchBy)
+                                        .addPreferredGap(ComponentPlacement.UNRELATED).addComponent(rdbtnFirstName)
+                                        .addPreferredGap(ComponentPlacement.RELATED).addComponent(rdbtnLastName)
+                                        .addPreferredGap(ComponentPlacement.RELATED).addComponent(rdbtnSid))
+                                .addGroup(gl_contentPane.createSequentialGroup()
+                                        .addComponent(tfSearchBy, GroupLayout.PREFERRED_SIZE, 188,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18).addComponent(btnSearchOk)))
+                                .addPreferredGap(ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                                .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+                                        .addGroup(gl_contentPane.createSequentialGroup()
+                                                .addPreferredGap(ComponentPlacement.RELATED).addComponent(lblByHowMany)
+                                                .addPreferredGap(ComponentPlacement.UNRELATED).addComponent(tfHowMany)
+                                                .addGap(18).addComponent(btnTravelOk))
+                                        .addGroup(gl_contentPane.createSequentialGroup().addComponent(lblTraverlingList)
+                                                .addPreferredGap(ComponentPlacement.UNRELATED)
+                                                .addComponent(rdbtnForward)
+                                                .addPreferredGap(ComponentPlacement.UNRELATED)
+                                                .addComponent(rdbtnBackward)))))
                 .addContainerGap()));
         gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-                .addGroup(gl_contentPane.createSequentialGroup().addContainerGap(48, Short.MAX_VALUE)
-                        .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(lblSearchBy)
-                                .addComponent(rdbtnFirstName).addComponent(rdbtnLastName).addComponent(rdbtnSid))
-                        .addGap(18)
-                        .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-                                .addComponent(tfSearchBy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnSearchOk))
+                .addGroup(gl_contentPane.createSequentialGroup().addContainerGap(18, Short.MAX_VALUE)
+                        .addGroup(gl_contentPane
+                                .createParallelGroup(Alignment.BASELINE).addComponent(lblSearchBy)
+                                .addComponent(rdbtnFirstName).addComponent(rdbtnLastName).addComponent(rdbtnSid)
+                                .addComponent(lblTraverlingList).addComponent(rdbtnForward).addComponent(rdbtnBackward))
+                        .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
+                                .createSequentialGroup().addGap(18)
+                                .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(tfSearchBy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnSearchOk)))
+                                .addGroup(gl_contentPane.createSequentialGroup().addGap(18).addGroup(gl_contentPane
+                                        .createParallelGroup(Alignment.BASELINE).addComponent(lblByHowMany)
+                                        .addComponent(tfHowMany, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnTravelOk))))
                         .addGap(19).addComponent(scpTable, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
                         .addContainerGap()));
 
@@ -128,8 +180,10 @@ public class RecordSearch extends JFrame {
 
     public void addListener() {
         SearchEventHandler seh = new SearchEventHandler();
+        TravelEventHandler teh = new TravelEventHandler();
         btnSearchOk.addActionListener(seh);
         tfSearchBy.addActionListener(seh);
+        btnTravelOk.addActionListener(teh);
 
     }
 
@@ -163,5 +217,52 @@ public class RecordSearch extends JFrame {
             }
         }
 
+    }
+
+    private class TravelEventHandler implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                int howMuch = Integer.valueOf(tfHowMany.getText());
+
+                DefaultTableModel model = (DefaultTableModel) tableSearchResults.getModel();
+                model.setRowCount(0);
+                String[] row = new String[5];
+                int i = 0;
+                if (rdbtnForward.isSelected() && howMuch >= 0 || rdbtnBackward.isSelected() && howMuch < 0) {
+                    if (currentPosition + howMuch >= studentsArrayList.size())
+                        JOptionPane.showMessageDialog(contentPane, "Cannot travel that far", "Message", 1);
+                    while (i <= Math.abs(howMuch) && currentPosition < studentsArrayList.size()) {
+                        row[0] = Integer.toString(i + 1);
+                        row[1] = studentsArrayList.get(currentPosition).getSID();
+                        row[2] = studentsArrayList.get(currentPosition).getFirstName();
+                        row[3] = studentsArrayList.get(currentPosition).getLastName();
+                        row[4] = Integer.toString(studentsArrayList.get(currentPosition).getSiteNum());
+                        model.addRow(row);
+                        i++;
+                        currentPosition++;
+                    }
+                    currentPosition--;
+
+                } else {
+                    if (currentPosition - howMuch < 0)
+                        JOptionPane.showMessageDialog(contentPane, "Cannot travel that far", "Message", 1);
+                    while (i <= Math.abs(howMuch) && currentPosition >= 0) {
+                        row[0] = Integer.toString(i + 1);
+                        row[1] = studentsArrayList.get(currentPosition).getSID();
+                        row[2] = studentsArrayList.get(currentPosition).getFirstName();
+                        row[3] = studentsArrayList.get(currentPosition).getLastName();
+                        row[4] = Integer.toString(studentsArrayList.get(currentPosition).getSiteNum());
+                        model.addRow(row);
+                        i++;
+                        currentPosition--;
+                    }
+                    currentPosition++;
+
+                }
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(contentPane, "Please enter a number.", "Message", 0);
+            }
+        }
     }
 }

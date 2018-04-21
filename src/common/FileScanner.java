@@ -167,7 +167,7 @@ public class FileScanner {
         Iterator<Student> iter = studentsTree.getIterator(BSTree.Traversal.Inorder);
         // while (iter.hasNext())
         // System.out.println(iter.next());
-        System.out.println("----------FileScanner 170-----------");
+        // System.out.println("----------FileScanner 170-----------");
         if (sorttype == SortType.FirstName) {
             System.out.println("test before searchstudents while loop");
             while (iter.hasNext()) {
@@ -195,6 +195,15 @@ public class FileScanner {
                     return results;
             }
         }
+        return results;
+    }
+
+    public ArrayList<Student> SortedStudentsArrayList() {
+        ArrayList<Student> results = new ArrayList<Student>();
+        BSTree<Student> studentsTree = sortStudents(SortType.FirstName);
+        Iterator<Student> iter = studentsTree.getIterator(BSTree.Traversal.Inorder);
+        while (iter.hasNext())
+            results.add(iter.next());
         return results;
     }
 
