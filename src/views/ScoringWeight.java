@@ -4,13 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 //import com.sun.glass.events.WindowEvent;
 //import com.sun.org.apache.xml.internal.security.utils.RFC2253Parser;
@@ -18,9 +11,14 @@ import javax.swing.border.EmptyBorder;
 //import sun.awt.image.codec.JPEGParam;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 public class ScoringWeight extends JDialog {
 
@@ -37,6 +35,9 @@ public class ScoringWeight extends JDialog {
     private int projWgt = 0;
     private int examWgt = 0;
 
+    /*
+     * create window
+     */
     public ScoringWeight(JPanel parent) {
         initialize(parent);
         ScoringWeightHanlder swh = new ScoringWeightHanlder();
@@ -46,6 +47,9 @@ public class ScoringWeight extends JDialog {
         tfExamWeight.addActionListener(swh);
     }
 
+    /*
+     * initialize the window
+     */
     public void initialize(JPanel parent) {
         setTitle("Set scoring weight");
         setSize(300, 200);
@@ -108,20 +112,25 @@ public class ScoringWeight extends JDialog {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
 
+    // get homework scoring weight
     public int getHwWgt() {
         return hwWgt;
     }
 
+    // get project scoring weight
     public int getProjWgt() {
         return projWgt;
     }
 
+    // get exam scoring weight
     public int getExamWgt() {
         return examWgt;
     }
 
+    /* get scoring weight from user
+     * show wrong message if total is not 100
+     */
     private class ScoringWeightHanlder implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             try {

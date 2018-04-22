@@ -1,11 +1,13 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,11 +20,6 @@ import common.Student;
 import common.Writer;
 //import jdk.nashorn.internal.scripts.JO;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
-
 public class ChangeRecord extends JDialog {
 
     private JPanel contentPane;
@@ -31,11 +28,21 @@ public class ChangeRecord extends JDialog {
     private JButton btnChangeRecord;
     private JButton btnClose;
 
+    /*
+     * create the change record frame
+     */
     public ChangeRecord(JFrame parent) {
         setTitle("Change Record");
         initialize(parent);
-        btnAddRecord.addActionListener(new ActionListener() {
 
+        // -------------------------------------listeners-------------------------------------
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        /*
+         * add record button
+         * promotes user to input student record
+         * add record to the end of default destination file
+         */
+        btnAddRecord.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String input1 = JOptionPane.showInputDialog(contentPane,
@@ -49,6 +56,14 @@ public class ChangeRecord extends JDialog {
             }
         });
 
+        /*
+         * remove record button
+         * promotes user to first input student ID
+         * then scan student file and generate student array list
+         * find matching SID and remove from array list
+         * then write to a temporary file and rename to default file
+         * if default file exists then overwrite
+         */
         btnRemoveRecord.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,15 +77,20 @@ public class ChangeRecord extends JDialog {
                         write.addString(students.get(i).toString());
                 }
                 write.close();
-
                 File old = new File("src/resources/students_grades.txt");
                 File temp = new File("src/resources/temp.txt");
                 temp.renameTo(old);
             }
         });
 
+        /*
+         * change record button
+         * scan student file and create student array list,
+         * find index of student with matching student ID,
+         * promote user input new record, create a new student
+         * then replace the old student at the index
+         */
         btnChangeRecord.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 String input = JOptionPane.showInputDialog(contentPane, "Enter SID to change", "Input", 1).trim();
@@ -85,6 +105,7 @@ public class ChangeRecord extends JDialog {
                         sidFound = true;
                     i++;
                 }
+                // check if SID can be found
                 if (!sidFound)
                     JOptionPane.showMessageDialog(contentPane, "SID not found", "Message", 1);
                 else {
@@ -97,11 +118,6 @@ public class ChangeRecord extends JDialog {
                     String className = JOptionPane.showInputDialog(contentPane, "Enter class name", "Input", 1).trim();
                     boolean classFound = false;
                     int j = 0;
-
-                    System.out.println(className + "111");
-                    System.out.println(courses.size());
-                    System.out.println(courses.get(7));
-                    System.out.println(courses.get(7).getClassName().equalsIgnoreCase(className));
                     do {
                         while (j < courses.size() && !classFound) {
                             if (courses.get(j).getClassName().equalsIgnoreCase(className))
@@ -115,6 +131,8 @@ public class ChangeRecord extends JDialog {
                         }
                     } while (!classFound);
                     j--;
+
+                    // generate grades array
                     int[] hwGrades = new int[courses.get(j).getHomework()];
                     int[] projGrades = new int[courses.get(j).getProjects()];
                     int[] examGrades = new int[courses.get(j).getExams()];
@@ -127,18 +145,22 @@ public class ChangeRecord extends JDialog {
                     for (int q = 0; q < courses.get(j).getExams(); q++)
                         examGrades[q] = Integer
                                 .valueOf(JOptionPane.showInputDialog(contentPane, "Enter exam grade", "Input", 1));
+
+                    // create student instance
                     Student std = new Student(firstName, lastName, SID, siteNum, courses.get(j));
                     std.setHwGrades(hwGrades);
                     std.setProjGrades(projGrades);
                     std.setExamGrades(examGrades);
                     students.set(i, std);
 
+                    // write to a temporary file
                     Writer write = new Writer("src/resources/temp.txt");
                     for (int h = 0; h < students.size(); h++) {
                         write.addString(students.get(h).toString());
                     }
                     write.close();
 
+                    // rename
                     File old = new File("src/resources/students_grades.txt");
                     File temp = new File("src/resources/temp.txt");
                     temp.renameTo(old);
@@ -146,14 +168,22 @@ public class ChangeRecord extends JDialog {
             }
         });
 
+        /*
+         * close button
+         * close the window
+         */
         btnClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
+        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
+    /*
+     * initialize the frame
+     */
     public void initialize(JFrame parent) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);

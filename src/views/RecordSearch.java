@@ -52,56 +52,49 @@ public class RecordSearch extends JDialog {
      */
     public RecordSearch(JFrame parent) {
         setTitle("Record Search");
-
         initialize(parent);
-        fileScan = new FileScanner("src/resources/class_roster.txt", "src/resources/fakedata.txt");
+        fileScan = new FileScanner("src/resources/class_roster.txt", "src/resources/students_grades.txt");
         studentsArrayList = fileScan.SortedStudentsArrayList();
         currentPosition = 0;
-        // System.out.println(studentsArrayList.size());
-        // for (int o = 0; o < 10; o++)
-        // System.out.println(studentsArrayList.get(o));
         addListener();
     }
 
+    /*
+     * Initialize the widow
+     */
     public void initialize(JFrame parent) {
         contentPane = new JPanel();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 520);
         setResizable(false);
-
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblSearchBy = new JLabel("Search by:");
-
         rdbtnFirstName = new JRadioButton("First name");
-        rdbtnFirstName.setSelected(true);
-        bgSearchBy.add(rdbtnFirstName);
-
         rdbtnLastName = new JRadioButton("Last name");
-        bgSearchBy.add(rdbtnLastName);
-
         rdbtnSid = new JRadioButton("SID");
+
+        bgSearchBy.add(rdbtnLastName);
+        bgSearchBy.add(rdbtnFirstName);
         bgSearchBy.add(rdbtnSid);
+        rdbtnFirstName.setSelected(true);
 
         tfSearchBy = new JTextField();
         tfSearchBy.setColumns(10);
-
         btnSearchOk = new JButton("OK");
 
         JScrollPane scpTable = new JScrollPane();
-
         JLabel lblTraverlingList = new JLabel("Traverling list:");
 
         rdbtnForward = new JRadioButton("Forward");
+        rdbtnBackward = new JRadioButton("Backward");
+
         bgTravelList.add(rdbtnForward);
+        bgTravelList.add(rdbtnBackward);
         rdbtnForward.setSelected(true);
 
-        rdbtnBackward = new JRadioButton("Backward");
-        bgTravelList.add(rdbtnBackward);
-
         lblByHowMany = new JLabel("by how many?");
-
         tfHowMany = new JTextField();
         tfHowMany.setColumns(5);
 
@@ -167,6 +160,9 @@ public class RecordSearch extends JDialog {
         setLocationRelativeTo(parent);
     }
 
+    /*
+     * Add event listener
+     */
     public void addListener() {
         SearchEventHandler seh = new SearchEventHandler();
         TravelEventHandler teh = new TravelEventHandler();
@@ -176,8 +172,14 @@ public class RecordSearch extends JDialog {
 
     }
 
+    // -------------------------------------listeners-------------------------------------
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /*
+     * Search event listener
+     * when one of radio button is selected
+     * do the search
+     */
     private class SearchEventHandler implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             String keyword = tfSearchBy.getText().trim();
@@ -208,6 +210,13 @@ public class RecordSearch extends JDialog {
 
     }
 
+    /*
+     * Travel event
+     * Generate an array list
+     * travel forward or backward
+     * stop when it hits the end
+     * default position is the first record of student file
+     */
     private class TravelEventHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -254,4 +263,5 @@ public class RecordSearch extends JDialog {
             }
         }
     }
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 }

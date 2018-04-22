@@ -48,13 +48,28 @@ public class RosterCreation extends JDialog {
         addListener();
     }
 
+    /*
+     * create event listener
+     */
     public void addListener() {
+
+        // -------------------------------------listeners-------------------------------------
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        /*
+         * cancel button
+         * close on click
+         */
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
+
+        /*
+         * okay button
+         * promotes user to input course information
+         */
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,7 +79,6 @@ public class RosterCreation extends JDialog {
                 try {
                     className = tfClassName.getText(0, 5).toUpperCase();
                 } catch (BadLocationException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
                 if (className == null)
@@ -90,8 +104,12 @@ public class RosterCreation extends JDialog {
                 }
             }
         });
+        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
+    /*
+     * Initialize the window
+     */
     private void initialize(JFrame parent) {
         setTitle("Create roster");
         setSize(600, 520);
