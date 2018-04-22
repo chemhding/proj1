@@ -12,10 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.sun.glass.events.WindowEvent;
-import com.sun.org.apache.xml.internal.security.utils.RFC2253Parser;
+//import com.sun.glass.events.WindowEvent;
+//import com.sun.org.apache.xml.internal.security.utils.RFC2253Parser;
 
-import sun.awt.image.codec.JPEGParam;
+//import sun.awt.image.codec.JPEGParam;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;

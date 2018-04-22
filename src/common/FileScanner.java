@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import common.BSTree.Traversal;
-import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
+//import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
 
 public class FileScanner {
     private Scanner scan;
