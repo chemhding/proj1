@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import common.BSTree.Traversal;
+
 public class FileScanner {
     private Scanner scan;
     private String pathCourse;
@@ -202,6 +204,198 @@ public class FileScanner {
         ArrayList<Student> results = new ArrayList<Student>();
         BSTree<Student> studentsTree = sortStudents(SortType.FirstName);
         Iterator<Student> iter = studentsTree.getIterator(BSTree.Traversal.Inorder);
+        while (iter.hasNext())
+            results.add(iter.next());
+        return results;
+    }
+
+    public ArrayList<Student> rankByClassSiteLastName() {
+        ArrayList<Student> results = new ArrayList<Student>();
+        Comparator<Student> comp = new Comparator<Student>() {
+            @Override
+            public int compare(Student s1, Student s2) {
+                if (s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName()) == 0) {
+                    if (s1.getSiteNum() == s2.getSiteNum()) {
+                        if (s1.getLastName().compareTo(s2.getLastName()) == 0) {
+                            if (s1.getFirstName().compareTo(s2.getFirstName()) == 0) {
+                                return s1.getSID().compareTo(s2.getSID());
+                            } else
+                                return s1.getFirstName().compareTo(s2.getFirstName());
+                        } else
+                            return s1.getLastName().compareTo(s2.getLastName());
+                    } else
+                        return s1.getSiteNum() - s2.getSiteNum();
+                } else
+                    return s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName());
+            }
+
+        };
+
+        BSTree<Student> studentsTree = new BSTree<Student>(comp);
+        for (int i = 0; i < students.size(); i++)
+            studentsTree.iterativeAdd(students.get(i));
+        Iterator<Student> iter = studentsTree.getIterator(Traversal.Inorder);
+        while (iter.hasNext())
+            results.add(iter.next());
+        return results;
+    }
+
+    public ArrayList<Student> rankByHwAvg() {
+        ArrayList<Student> results = new ArrayList<Student>();
+        Comparator<Student> comp = new Comparator<Student>() {
+            @Override
+            public int compare(Student s1, Student s2) {
+                if (s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName()) == 0) {
+                    if (s1.getAverageHomeWork() == s2.getAverageHomeWork()) {
+                        if (s1.getSiteNum() == s2.getSiteNum()) {
+                            if (s1.getLastName().compareTo(s2.getLastName()) == 0) {
+                                return s1.getFirstName().compareTo(s2.getFirstName());
+                            } else
+                                return s1.getLastName().compareTo(s2.getLastName());
+                        } else
+                            return s1.getSiteNum() - s2.getSiteNum();
+                    } else
+                        return s2.getAverageHomeWork() - s1.getAverageHomeWork();
+                } else
+                    return s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName());
+            }
+
+        };
+
+        BSTree<Student> studentsTree = new BSTree<Student>(comp);
+        for (int i = 0; i < students.size(); i++)
+            studentsTree.iterativeAdd(students.get(i));
+        Iterator<Student> iter = studentsTree.getIterator(Traversal.Inorder);
+        while (iter.hasNext())
+            results.add(iter.next());
+        return results;
+    }
+
+    public ArrayList<Student> rankByProjAvg() {
+        ArrayList<Student> results = new ArrayList<Student>();
+        Comparator<Student> comp = new Comparator<Student>() {
+            @Override
+            public int compare(Student s1, Student s2) {
+                if (s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName()) == 0) {
+                    if (s1.getAveragePorjet() == s2.getAveragePorjet()) {
+                        if (s1.getSiteNum() == s2.getSiteNum()) {
+                            if (s1.getLastName().compareTo(s2.getLastName()) == 0) {
+                                return s1.getFirstName().compareTo(s2.getFirstName());
+                            } else
+                                return s1.getLastName().compareTo(s2.getLastName());
+                        } else
+                            return s1.getSiteNum() - s2.getSiteNum();
+                    } else
+                        return s2.getAveragePorjet() - s1.getAveragePorjet();
+                } else
+                    return s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName());
+            }
+
+        };
+
+        BSTree<Student> studentsTree = new BSTree<Student>(comp);
+        for (int i = 0; i < students.size(); i++)
+            studentsTree.iterativeAdd(students.get(i));
+        Iterator<Student> iter = studentsTree.getIterator(Traversal.Inorder);
+        while (iter.hasNext())
+            results.add(iter.next());
+        return results;
+    }
+
+    public ArrayList<Student> rankByExamAvg() {
+        ArrayList<Student> results = new ArrayList<Student>();
+        Comparator<Student> comp = new Comparator<Student>() {
+            @Override
+            public int compare(Student s1, Student s2) {
+                if (s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName()) == 0) {
+                    if (s1.getAverageExam() == s2.getAverageExam()) {
+                        if (s1.getSiteNum() == s2.getSiteNum()) {
+                            if (s1.getLastName().compareTo(s2.getLastName()) == 0) {
+                                return s1.getFirstName().compareTo(s2.getFirstName());
+                            } else
+                                return s1.getLastName().compareTo(s2.getLastName());
+                        } else
+                            return s1.getSiteNum() - s2.getSiteNum();
+                    } else
+                        return s2.getAverageExam() - s1.getAverageExam();
+                } else
+                    return s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName());
+            }
+
+        };
+
+        BSTree<Student> studentsTree = new BSTree<Student>(comp);
+        for (int i = 0; i < students.size(); i++)
+            studentsTree.iterativeAdd(students.get(i));
+        Iterator<Student> iter = studentsTree.getIterator(Traversal.Inorder);
+        while (iter.hasNext())
+            results.add(iter.next());
+        return results;
+    }
+
+    // @param i homework weight
+    // @param j project weight
+    // @param k exam weight
+    public ArrayList<Student> rankByTotalScore(int i, int j, int k) {
+        ArrayList<Student> results = new ArrayList<Student>();
+        Comparator<Student> comp = new Comparator<Student>() {
+            @Override
+            public int compare(Student s1, Student s2) {
+                if (s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName()) == 0) {
+                    if (s1.getTotalScore(i, j, k) == s2.getTotalScore(i, j, k)) {
+                        if (s1.getSiteNum() == s2.getSiteNum()) {
+                            if (s1.getLastName().compareTo(s2.getLastName()) == 0) {
+                                return s1.getFirstName().compareTo(s2.getFirstName());
+                            } else
+                                return s1.getLastName().compareTo(s2.getLastName());
+                        } else
+                            return s1.getSiteNum() - s2.getSiteNum();
+                    } else
+                        return s2.getTotalScore(i, j, k) - s1.getTotalScore(i, j, k);
+                } else
+                    return s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName());
+            }
+
+        };
+
+        BSTree<Student> studentsTree = new BSTree<Student>(comp);
+        for (int t = 0; t < students.size(); t++)
+            studentsTree.iterativeAdd(students.get(t));
+        Iterator<Student> iter = studentsTree.getIterator(Traversal.Inorder);
+        while (iter.hasNext())
+            results.add(iter.next());
+        return results;
+    }
+
+    // @param i homework weight
+    // @param j project weight
+    // @param k exam weight
+    public ArrayList<Student> rankByGrade(int i, int j, int k) {
+        ArrayList<Student> results = new ArrayList<Student>();
+        Comparator<Student> comp = new Comparator<Student>() {
+            @Override
+            public int compare(Student s1, Student s2) {
+                if (s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName()) == 0) {
+                    if (s1.getGrade(i, j, k) == s2.getGrade(i, j, k)) {
+                        if (s1.getSiteNum() == s2.getSiteNum()) {
+                            if (s1.getLastName().compareTo(s2.getLastName()) == 0) {
+                                return s1.getFirstName().compareTo(s2.getFirstName());
+                            } else
+                                return s1.getLastName().compareTo(s2.getLastName());
+                        } else
+                            return s1.getSiteNum() - s2.getSiteNum();
+                    } else
+                        return s1.getGrade(i, j, k) - s2.getGrade(i, j, k);
+                } else
+                    return s1.getCourse().getClassName().compareTo(s2.getCourse().getClassName());
+            }
+
+        };
+
+        BSTree<Student> studentsTree = new BSTree<Student>(comp);
+        for (int t = 0; t < students.size(); t++)
+            studentsTree.iterativeAdd(students.get(t));
+        Iterator<Student> iter = studentsTree.getIterator(Traversal.Inorder);
         while (iter.hasNext())
             results.add(iter.next());
         return results;

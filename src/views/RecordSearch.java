@@ -1,41 +1,31 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.BoxLayout;
-import javax.swing.JTextPane;
-import javax.swing.JTextField;
-import javax.swing.JEditorPane;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.Files;
 import java.util.ArrayList;
 
-import javax.swing.JTextArea;
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
-import javax.swing.ButtonGroup;
-import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import common.*;
+import common.FileScanner;
 import common.FileScanner.SortType;
-import jdk.nashorn.internal.scripts.JO;
+import common.Student;
 
-public class RecordSearch extends JFrame {
+public class RecordSearch extends JDialog {
 
     private JPanel contentPane;
     private JTextField tfSearchBy;
@@ -67,15 +57,14 @@ public class RecordSearch extends JFrame {
         fileScan = new FileScanner("src/resources/class_roster.txt", "src/resources/fakedata.txt");
         studentsArrayList = fileScan.SortedStudentsArrayList();
         currentPosition = 0;
-        System.out.println(studentsArrayList.size());
-        for (int o = 0; o < 10; o++)
-            System.out.println(studentsArrayList.get(o));
+        // System.out.println(studentsArrayList.size());
+        // for (int o = 0; o < 10; o++)
+        // System.out.println(studentsArrayList.get(o));
         addListener();
     }
 
     public void initialize(JFrame parent) {
         contentPane = new JPanel();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 520);
         setResizable(false);

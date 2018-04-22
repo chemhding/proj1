@@ -24,7 +24,7 @@ public class randomStudents {
             }
             System.out.println(firstNames.size() + " " + lastNames.size() + " " + classNames.size());
             Random rand = new Random();
-            for (int i = 0; i < 100000; i++) {
+            for (int i = 0; i < 1000; i++) {
                 String first = firstNames.get(rand.nextInt(30));
                 String last = lastNames.get(rand.nextInt(30));
                 int firstFive = rand.nextInt(10000) + 10001;

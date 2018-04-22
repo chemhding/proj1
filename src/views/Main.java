@@ -38,7 +38,7 @@ public class Main implements ActionListener {
     private JButton btnGradeInput;
     private JButton btnRecordSearch;
     private JButton btnRosterCreation;
-    private JButton btnNewButton;
+    private JButton btnChangeRecord;
     private JButton btnStatistics;
     private JButton btnShowList;
 
@@ -92,7 +92,7 @@ public class Main implements ActionListener {
         btnGradeInput = new JButton("Grade Input");
         btnRecordSearch = new JButton("Record Search");
         btnShowList = new JButton("Show List");
-        btnNewButton = new JButton("Change Record");
+        btnChangeRecord = new JButton("Change Record");
         btnStatistics = new JButton("Statistics");
         btnExit = new JButton("Exit");
 
@@ -116,8 +116,8 @@ public class Main implements ActionListener {
                                                 GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-                                        .addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-                                                Short.MAX_VALUE)
+                                        .addComponent(btnChangeRecord, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnStatistics, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
                                                 Short.MAX_VALUE)
                                         .addComponent(btnShowList, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 184,
@@ -133,7 +133,7 @@ public class Main implements ActionListener {
                                                         .addComponent(btnRosterCreation).addComponent(btnShowList))
                                                 .addGap(49)
                                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                                        .addComponent(btnGradeInput).addComponent(btnNewButton))
+                                                        .addComponent(btnGradeInput).addComponent(btnChangeRecord))
                                                 .addGap(50)
                                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
                                                         .addComponent(btnRecordSearch).addComponent(btnStatistics))
@@ -147,6 +147,8 @@ public class Main implements ActionListener {
         btnExit.addActionListener(this);
         btnGradeInput.addActionListener(this);
         btnRecordSearch.addActionListener(this);
+        btnShowList.addActionListener(this);
+        btnChangeRecord.addActionListener(this);
     }
 
     @Override
@@ -187,7 +189,17 @@ public class Main implements ActionListener {
             }
         } else if (ae.getSource() == btnRecordSearch) {
             RecordSearch rs = new RecordSearch(frame);
+            rs.setModal(true);
             rs.setVisible(true);
+        } else if (ae.getSource() == btnShowList) {
+            ShowList sl = new ShowList(frame);
+            sl.setModal(true);
+            sl.setVisible(true);
+
+        } else if (ae.getSource() == btnChangeRecord) {
+            ChangeRecord cr = new ChangeRecord(frame);
+            cr.setModal(true);
+            cr.setVisible(true);
         } else if (ae.getSource() == btnExit) {
             System.exit(0);
         }
