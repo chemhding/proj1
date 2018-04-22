@@ -33,7 +33,7 @@ import common.Writer;
 
 public class Main implements ActionListener {
 
-    private JFrame frame;
+    private JFrame frmGpams;
     private JButton btnExit;
     private JButton btnGradeInput;
     private JButton btnRecordSearch;
@@ -56,7 +56,7 @@ public class Main implements ActionListener {
             public void run() {
                 try {
                     Main window = new Main();
-                    window.frame.setVisible(true);
+                    window.frmGpams.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -76,15 +76,16 @@ public class Main implements ActionListener {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-        frame = new JFrame();
-        frame.setResizable(false);
+        frmGpams = new JFrame();
+        frmGpams.setTitle("GPAMS");
+        frmGpams.setResizable(false);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize(screenSize.width / 2, screenSize.height / 2);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frmGpams.setSize(screenSize.width / 2, screenSize.height / 2);
+        frmGpams.setLocationRelativeTo(null);
+        frmGpams.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JLabel lblInstruction = new JLabel("Please select what you want to do");
+        JLabel lblInstruction = new JLabel("Grade Point Average Management System");
         lblInstruction.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         lblInstruction.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -96,39 +97,36 @@ public class Main implements ActionListener {
         btnStatistics = new JButton("Statistics");
         btnExit = new JButton("Exit");
 
-        GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-        groupLayout
-                .setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(groupLayout.createSequentialGroup().addGap(342).addComponent(lblInstruction)
-                                .addContainerGap(344, Short.MAX_VALUE))
-                        .addGroup(Alignment.LEADING,
-                                groupLayout.createSequentialGroup().addGap(383)
-                                        .addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 184,
-                                                GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(387, Short.MAX_VALUE))
-                        .addGroup(groupLayout.createSequentialGroup().addGap(210)
-                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-                                        .addComponent(btnGradeInput, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-                                                Short.MAX_VALUE)
-                                        .addComponent(btnRecordSearch, GroupLayout.DEFAULT_SIZE,
-                                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnRosterCreation, GroupLayout.PREFERRED_SIZE, 184,
-                                                GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
-                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-                                        .addComponent(btnChangeRecord, GroupLayout.DEFAULT_SIZE,
-                                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnStatistics, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-                                                Short.MAX_VALUE)
-                                        .addComponent(btnShowList, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 184,
-                                                GroupLayout.PREFERRED_SIZE))
-                                .addGap(208)));
+        GroupLayout groupLayout = new GroupLayout(frmGpams.getContentPane());
+        groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                .addGroup(groupLayout.createSequentialGroup().addGap(383)
+                        .addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(387, Short.MAX_VALUE))
+                .addGroup(groupLayout.createSequentialGroup().addGap(210)
+                        .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+                                .addComponent(btnGradeInput, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        Short.MAX_VALUE)
+                                .addComponent(btnRecordSearch, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        Short.MAX_VALUE)
+                                .addComponent(btnRosterCreation, GroupLayout.PREFERRED_SIZE, 184,
+                                        GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                        .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+                                .addComponent(btnChangeRecord, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        Short.MAX_VALUE)
+                                .addComponent(btnStatistics, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        Short.MAX_VALUE)
+                                .addComponent(btnShowList, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 184,
+                                        GroupLayout.PREFERRED_SIZE))
+                        .addGap(208))
+                .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup().addGap(311)
+                        .addComponent(lblInstruction).addContainerGap(307, Short.MAX_VALUE)));
         groupLayout
                 .setVerticalGroup(
                         groupLayout.createParallelGroup(Alignment.LEADING)
                                 .addGroup(
-                                        groupLayout.createSequentialGroup().addGap(33).addComponent(lblInstruction)
-                                                .addGap(83)
+                                        groupLayout.createSequentialGroup().addGap(37).addComponent(lblInstruction)
+                                                .addGap(79)
                                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
                                                         .addComponent(btnRosterCreation).addComponent(btnShowList))
                                                 .addGap(49)
@@ -138,8 +136,8 @@ public class Main implements ActionListener {
                                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
                                                         .addComponent(btnRecordSearch).addComponent(btnStatistics))
                                                 .addGap(82).addComponent(btnExit)
-                                                .addContainerGap(89, Short.MAX_VALUE)));
-        frame.getContentPane().setLayout(groupLayout);
+                                                .addContainerGap(97, Short.MAX_VALUE)));
+        frmGpams.getContentPane().setLayout(groupLayout);
     }
 
     public void addListener() {
@@ -155,7 +153,7 @@ public class Main implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == btnRosterCreation) {
-            RosterCreation rc = new RosterCreation(frame);
+            RosterCreation rc = new RosterCreation(frmGpams);
             rc.setModal(true);
             rc.setVisible(true);
         } else if (ae.getSource() == btnGradeInput) {
@@ -163,7 +161,7 @@ public class Main implements ActionListener {
             jf.setCurrentDirectory(new File(System.getProperty("user.home")));
             FileNameExtensionFilter filter = new FileNameExtensionFilter("*.text", "txt");
             jf.addChoosableFileFilter(filter);
-            int result = jf.showOpenDialog(frame);
+            int result = jf.showOpenDialog(frmGpams);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File gradeFile = jf.getSelectedFile();
                 String path = gradeFile.getAbsolutePath();
@@ -189,20 +187,20 @@ public class Main implements ActionListener {
 
             }
         } else if (ae.getSource() == btnRecordSearch) {
-            RecordSearch rs = new RecordSearch(frame);
+            RecordSearch rs = new RecordSearch(frmGpams);
             rs.setModal(true);
             rs.setVisible(true);
         } else if (ae.getSource() == btnShowList) {
-            ShowList sl = new ShowList(frame);
+            ShowList sl = new ShowList(frmGpams);
             sl.setModal(true);
             sl.setVisible(true);
 
         } else if (ae.getSource() == btnChangeRecord) {
-            ChangeRecord cr = new ChangeRecord(frame);
+            ChangeRecord cr = new ChangeRecord(frmGpams);
             cr.setModal(true);
             cr.setVisible(true);
         } else if (ae.getSource() == btnStatistics) {
-            Statistics sts = new Statistics(frame);
+            Statistics sts = new Statistics(frmGpams);
             sts.setModal(true);
             sts.setVisible(true);
         } else if (ae.getSource() == btnExit) {

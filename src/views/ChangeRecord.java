@@ -44,8 +44,10 @@ public class ChangeRecord extends JDialog {
                         "Please enter class name, homework grades, project grads, exam grads, use white space to seperate",
                         "Input", 1);
                 Writer write = new Writer("src/resources/students_grades.txt");
-                write.addString(input1 + " " + input2);
-                write.close();
+                if (input1 != null && input2 != null) {
+                    write.addString(input1 + " " + input2);
+                    write.close();
+                }
             }
         });
 
