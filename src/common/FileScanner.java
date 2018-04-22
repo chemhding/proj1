@@ -2,9 +2,11 @@ package common;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import common.BSTree.Traversal;
+import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
 
 public class FileScanner {
     private Scanner scan;
@@ -399,6 +401,150 @@ public class FileScanner {
         while (iter.hasNext())
             results.add(iter.next());
         return results;
+    }
+
+    public ArrayList<String[]> gradesPerClass() {
+
+        ArrayList<Student> students = rankByClassSiteLastName();
+        ArrayList<String[]> classGrades = new ArrayList<String[]>();
+        String tempClassName = students.get(0).getCourse().getClassName();
+        int i = 0, numPerClass = 0;
+        int totalHwGrade = 0, totalProjGrade = 0, totalExamGrade = 0, totalScore = 0;
+        while (i < students.size()) {
+            if (tempClassName.equals(students.get(i).getCourse().getClassName())) {
+                totalHwGrade += students.get(i).getAverageHomeWork();
+                totalProjGrade += students.get(i).getAveragePorjet();
+                totalExamGrade += students.get(i).getAverageExam();
+                totalScore += students.get(i).getTotalScore(20, 20, 60);
+                numPerClass++;
+            } else {
+                String[] temp = new String[] { tempClassName, totalHwGrade / numPerClass + "",
+                        totalProjGrade / numPerClass + "", totalExamGrade / numPerClass + "",
+                        totalScore / numPerClass + "" };
+                classGrades.add(temp);
+                tempClassName = students.get(i).getCourse().getClassName();
+                totalHwGrade = students.get(i).getAverageHomeWork();
+                totalProjGrade = students.get(i).getAveragePorjet();
+                totalExamGrade = students.get(i).getAverageExam();
+                totalScore = students.get(i).getTotalScore(20, 20, 60);
+                numPerClass = 1;
+            }
+            i++;
+        }
+        String[] temp = new String[] { tempClassName, totalHwGrade / numPerClass + "",
+                totalProjGrade / numPerClass + "", totalExamGrade / numPerClass + "", totalScore / numPerClass + "" };
+        classGrades.add(temp);
+
+        return classGrades;
+    }
+
+    public ArrayList<int[]> classDetailedGrades(String className) {
+
+        ArrayList<Student> students = rankByClassSiteLastName();
+        ArrayList<int[]> classGrades = new ArrayList<int[]>();
+        int i = 0;
+        int foundIndex = 0, stopIndex = 0;
+
+        int totalHwGrade = 0, totalProjGrade = 0, totalExamGrade = 0, totalScore = 0;
+        boolean found = false, stop = false;
+        System.out.println(students.get(0).getSiteNum());
+        System.out.println(students.get(7).getSiteNum());
+        while (i < students.size() && !stop) {
+            if (className.equalsIgnoreCase(students.get(i).getCourse().getClassName())) {
+                if (!found)
+                    foundIndex = i;
+                found = true;
+            } else if (found) {
+                if (!className.equalsIgnoreCase(students.get(i).getCourse().getClassName())) {
+                    stopIndex = i - 1;
+                    stop = true;
+                }
+            } else {
+            }
+            i++;
+        }
+        int j = foundIndex;
+        System.out.println(foundIndex + " " + stopIndex);
+        int numPerSite = 0;
+        int tempSiteNum = students.get(j).getSiteNum();
+        while (j <= stopIndex) {
+            if (tempSiteNum == students.get(j).getSiteNum()) {
+                totalHwGrade += students.get(j).getAverageHomeWork();
+                totalProjGrade += students.get(j).getAveragePorjet();
+                totalExamGrade += students.get(j).getAverageExam();
+                totalScore += students.get(j).getTotalScore(20, 20, 60);
+                numPerSite++;
+            } else {
+                int[] temp = new int[] { tempSiteNum, totalHwGrade / numPerSite, totalProjGrade / numPerSite,
+                        totalExamGrade / numPerSite, totalScore / numPerSite };
+                classGrades.add(temp);
+                tempSiteNum = students.get(j).getSiteNum();
+                totalHwGrade = students.get(j).getAverageHomeWork();
+                totalProjGrade = students.get(j).getAveragePorjet();
+                totalExamGrade = students.get(j).getAverageExam();
+                totalScore = students.get(j).getTotalScore(20, 20, 60);
+                numPerSite = 1;
+            }
+            j++;
+        }
+
+        int[] temp = new int[] { tempSiteNum, totalHwGrade / numPerSite, totalProjGrade / numPerSite,
+                totalExamGrade / numPerSite, totalScore / numPerSite };
+        classGrades.add(temp);
+
+        return classGrades;
+    }
+
+    public ArrayList<String[]> gradePercentage() {
+
+        ArrayList<Student> students = rankByClassSiteLastName();
+        ArrayList<String[]> classGrades = new ArrayList<String[]>();
+        String tempClassName = students.get(0).getCourse().getClassName();
+        int i = 0, numPerClass = 0;
+        int ANum = 0, BNum = 0, CNum = 0, ENum = 0;
+        DecimalFormat fmt = new DecimalFormat("0.00");
+        while (i < students.size()) {
+            if (tempClassName.equals(students.get(i).getCourse().getClassName())) {
+                if (students.get(i).getGrade(20, 20, 60) == 'A')
+                    ANum++;
+                else if (students.get(i).getGrade(20, 20, 60) == 'B')
+                    BNum++;
+                else if (students.get(i).getGrade(20, 20, 60) == 'C')
+                    CNum++;
+                else
+                    ENum++;
+                numPerClass++;
+            } else {
+                String[] temp = new String[] { tempClassName, fmt.format((double) ANum / numPerClass * 100) + "%",
+                        fmt.format((double) BNum / numPerClass * 100) + "%",
+                        fmt.format((double) CNum / numPerClass * 100) + "%",
+                        fmt.format((double) ENum / numPerClass * 100) + "%" };
+                System.out.println(ANum + " " + BNum + " " + CNum + " " + ENum + " " + numPerClass);
+                classGrades.add(temp);
+                tempClassName = students.get(i).getCourse().getClassName();
+                ANum = 0;
+                BNum = 0;
+                CNum = 0;
+                ENum = 0;
+                if (students.get(i).getGrade(20, 20, 60) == 'A')
+                    ANum = 1;
+                else if (students.get(i).getGrade(20, 20, 60) == 'B')
+                    BNum = 1;
+                else if (students.get(i).getGrade(20, 20, 60) == 'C')
+                    CNum = 1;
+                else
+                    ENum = 1;
+                numPerClass = 1;
+            }
+            i++;
+        }
+        String[] temp = new String[] { tempClassName, fmt.format((double) ANum / numPerClass * 100) + "%",
+                fmt.format((double) BNum / numPerClass * 100) + "%",
+                fmt.format((double) CNum / numPerClass * 100) + "%",
+                fmt.format((double) ENum / numPerClass * 100) + "%" };
+        classGrades.add(temp);
+
+        return classGrades;
     }
 
     // public static void main(String[] args) {

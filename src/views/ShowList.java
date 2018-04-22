@@ -240,6 +240,7 @@ public class ShowList extends JDialog {
         scrollPane = new JScrollPane();
 
         rdbtnGrade = new JRadioButton("Grade");
+        bgShowList.add(rdbtnGrade);
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane
                 .setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)

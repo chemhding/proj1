@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import common.Course;
 import common.FileScanner;
 import common.Student;
 import common.Writer;
@@ -62,12 +63,86 @@ public class ChangeRecord extends JDialog {
                 }
                 write.close();
 
-                File old = new File("E:\\Download\\students_grades.txt");
+                File old = new File("src/resources/students_grades.txt");
                 File temp = new File("src/resources/temp.txt");
-                System.out.println(temp.renameTo(old));
-                // File file = new File("src/resources/students_grades.txt");
-                // File temp = new File("src/resources/temp.txt");
-                // temp.renameTo(old);
+                temp.renameTo(old);
+            }
+        });
+
+        btnChangeRecord.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String input = JOptionPane.showInputDialog(contentPane, "Enter SID to change", "Input", 1).trim();
+                FileScanner fileScan = new FileScanner("src/resources/class_roster.txt",
+                        "src/resources/students_grades.txt");
+                ArrayList<Student> students = fileScan.getStudents();
+                ArrayList<Course> courses = fileScan.getCourses();
+                boolean sidFound = false;
+                int i = 0;
+                while (i < students.size() && !sidFound) {
+                    if (students.get(i).getSID().equals(input))
+                        sidFound = true;
+                    i++;
+                }
+                if (!sidFound)
+                    JOptionPane.showMessageDialog(contentPane, "SID not found", "Message", 1);
+                else {
+                    i--;
+                    String firstName = JOptionPane.showInputDialog(contentPane, "Enter Frist Name", "Input", 1).trim();
+                    String lastName = JOptionPane.showInputDialog(contentPane, "Enter Last Name", "Input", 1).trim();
+                    String SID = JOptionPane.showInputDialog(contentPane, "Enter SID", "Input", 1).trim();
+                    int siteNum = Integer
+                            .valueOf(JOptionPane.showInputDialog(contentPane, "Enter site number", "Input", 1).trim());
+                    String className = JOptionPane.showInputDialog(contentPane, "Enter class name", "Input", 1).trim();
+                    boolean classFound = false;
+                    int j = 0;
+
+                    System.out.println(className + "111");
+                    System.out.println(courses.size());
+                    System.out.println(courses.get(7));
+                    System.out.println(courses.get(7).getClassName().equalsIgnoreCase(className));
+                    do {
+                        while (j < courses.size() && !classFound) {
+                            if (courses.get(j).getClassName().equalsIgnoreCase(className))
+                                classFound = true;
+                            j++;
+                        }
+                        System.out.println(classFound);
+                        if (!classFound) {
+                            className = JOptionPane.showInputDialog(contentPane, "Enter class name", "Input", 1).trim();
+                            j = 0;
+                        }
+                    } while (!classFound);
+                    j--;
+                    int[] hwGrades = new int[courses.get(j).getHomework()];
+                    int[] projGrades = new int[courses.get(j).getProjects()];
+                    int[] examGrades = new int[courses.get(j).getExams()];
+                    for (int k = 0; k < courses.get(j).getHomework(); k++)
+                        hwGrades[k] = Integer
+                                .valueOf(JOptionPane.showInputDialog(contentPane, "Enter homework grade", "Input", 1));
+                    for (int p = 0; p < courses.get(j).getProjects(); p++)
+                        projGrades[p] = Integer
+                                .valueOf(JOptionPane.showInputDialog(contentPane, "Enter project grade", "Input", 1));
+                    for (int q = 0; q < courses.get(j).getExams(); q++)
+                        examGrades[q] = Integer
+                                .valueOf(JOptionPane.showInputDialog(contentPane, "Enter exam grade", "Input", 1));
+                    Student std = new Student(firstName, lastName, SID, siteNum, courses.get(j));
+                    std.setHwGrades(hwGrades);
+                    std.setProjGrades(projGrades);
+                    std.setExamGrades(examGrades);
+                    students.set(i, std);
+
+                    Writer write = new Writer("src/resources/temp.txt");
+                    for (int h = 0; h < students.size(); h++) {
+                        write.addString(students.get(h).toString());
+                    }
+                    write.close();
+
+                    File old = new File("src/resources/students_grades.txt");
+                    File temp = new File("src/resources/temp.txt");
+                    temp.renameTo(old);
+                }
             }
         });
 

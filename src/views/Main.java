@@ -149,6 +149,7 @@ public class Main implements ActionListener {
         btnRecordSearch.addActionListener(this);
         btnShowList.addActionListener(this);
         btnChangeRecord.addActionListener(this);
+        btnStatistics.addActionListener(this);
     }
 
     @Override
@@ -200,6 +201,10 @@ public class Main implements ActionListener {
             ChangeRecord cr = new ChangeRecord(frame);
             cr.setModal(true);
             cr.setVisible(true);
+        } else if (ae.getSource() == btnStatistics) {
+            Statistics sts = new Statistics(frame);
+            sts.setModal(true);
+            sts.setVisible(true);
         } else if (ae.getSource() == btnExit) {
             System.exit(0);
         }
