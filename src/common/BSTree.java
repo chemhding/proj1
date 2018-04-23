@@ -197,6 +197,7 @@ public class BSTree<T> implements Iterable<T> {
         }
     }
 
+    // inner class binary search tree node
     public class BSTNode<E> {
         private BSTNode<E> left;
         private BSTNode<E> right;
@@ -233,6 +234,7 @@ public class BSTree<T> implements Iterable<T> {
         }
     }
 
+    // inner class of direction
     public enum Traversal {
         Inorder, Preorder, Postorder;
     }

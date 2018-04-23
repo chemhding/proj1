@@ -1,26 +1,24 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import common.FileScanner;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 public class Statistics extends JDialog {
 
@@ -31,11 +29,21 @@ public class Statistics extends JDialog {
     private JScrollPane scrollPane;
     private JButton btnGradePercentage;
 
+    /*
+     * Create window
+     */
     public Statistics(JFrame parent) {
         setTitle("Statistics");
         initialize(parent);
-        textField.addActionListener(new ActionListener() {
 
+        // -------------------------------------listeners-------------------------------------
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        /*
+         * text field listener
+         * Receive the class name from user input
+         * If class exists, return detailed grades average by site
+         */
+        textField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tbClasses = new JTable();
@@ -64,6 +72,11 @@ public class Statistics extends JDialog {
                 }
             }
         });
+
+        /*
+         * Statistics button listener
+         * Show the students list ranked by class
+         */
         btnStatistics.addActionListener(new ActionListener() {
 
             @Override
@@ -95,8 +108,10 @@ public class Statistics extends JDialog {
             }
         });
 
+        /*
+         * Button ranked by grade percentage
+         */
         btnGradePercentage.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 tbClasses = new JTable();
@@ -126,8 +141,12 @@ public class Statistics extends JDialog {
 
             }
         });
+        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
+    /*
+     * Initialize the window
+     */
     public void initialize(JFrame parent) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 540);

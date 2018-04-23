@@ -8,6 +8,7 @@ public class Course {
     private int sites;
     private int[] students;
 
+    // Construct course by default
     public Course(String className) {
         this.className = className;
         homework = 10;
@@ -17,6 +18,13 @@ public class Course {
         students = new int[] { 10, 5, 5 };
     }
 
+    // Construct course by parameters
+    /* @param c class name
+     * @param h number of homework
+     * @param p number of projects
+     * @param e number of exams
+     * @param s number of sites
+     */
     public Course(String c, int h, int p, int e, int s) {
         className = c;
         homework = h;
@@ -26,6 +34,8 @@ public class Course {
         students = new int[sites];
     }
 
+    // -------------------Getters and Setters-------------------
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     public String getClassName() {
         return className;
     }
@@ -79,6 +89,7 @@ public class Course {
         for (int i = 0; i < length; i++)
             this.students[i] = students[i];
     }
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     @Override
     public String toString() {

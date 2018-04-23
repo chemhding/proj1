@@ -10,6 +10,7 @@ public class Student {
     private int[] examGrades;
     private int[] projGrades;
 
+    // Construct student
     public Student(String fn, String ln, String sid, int stn, Course course) {
         firstName = fn;
         lastName = ln;
@@ -21,6 +22,8 @@ public class Student {
         projGrades = new int[course.getProjects()];
     }
 
+    // -------------------Getters and Setters-------------------
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     public String getFirstName() {
         return firstName;
     }
@@ -148,6 +151,7 @@ public class Student {
             grade = 'E';
         return grade;
     }
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     @Override
     public String toString() {

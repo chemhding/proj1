@@ -4,6 +4,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/*
+ * This class is responsible for writing to files
+ */
 public class Writer {
     protected String destinationPath;
 
@@ -13,7 +16,6 @@ public class Writer {
         try {
             bw = new BufferedWriter(new FileWriter(destinationPath, true));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -23,9 +25,7 @@ public class Writer {
             bw.write(toBeWritten);
             bw.newLine();
             bw.write("");
-            // bw.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -34,25 +34,7 @@ public class Writer {
         try {
             bw.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-    ////
-    //// public static void main(String[] args) {
-    //// Writer ww = new Writer("src/resources/ss.txt");
-    //// ww.addString("aaaaaaaa");
-    //// try {
-    //// BufferedWriter bb = new BufferedWriter(new
-    //// FileWriter("src/resources/ss.txt"));
-    //// bb.write("XXX");
-    //// bb.append(" ");
-    //// bb.newLine();
-    //// bb.close();
-    //// } catch (IOException e) {
-    //// // TODO Auto-generated catch block
-    //// e.printStackTrace();
-    //// }
-    //
-    // }
 }

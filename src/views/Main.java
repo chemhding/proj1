@@ -19,6 +19,9 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import common.FileScanner;
 import common.Student;
 import common.Writer;
@@ -34,13 +37,17 @@ public class Main implements ActionListener {
     private JButton btnStatistics;
     private JButton btnShowList;
 
+    private static Logger logger = LogManager.getLogger(Main.class);
+
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
+        logger.info("Program start");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Throwable e) {
+            logger.error("Error while set look and feel. Message: " + e.getMessage());
             e.printStackTrace();
         }
         EventQueue.invokeLater(new Runnable() {
@@ -167,38 +174,31 @@ public class Main implements ActionListener {
                 for (int i = 0; i < students.size(); i++)
                     write.addString(students.get(i).toString());
                 write.close();
-                // try {
-                // Scanner scan = new Scanner(gradeFile);
-                // while (scan.hasNextLine()) {
-                // String line = scan.nextLine();
-                // Writer writer = new Writer("src/resources/students_grades.txt");
-                // writer.addString(line);
-                // }
                 JOptionPane.showMessageDialog(jf, "Grade input completed!", "Congratulations", 1);
-                // } catch (FileNotFoundException e) {
-                // // TODO Auto-generated catch block
-                // e.printStackTrace();
-                // }
-
             }
         } else if (ae.getSource() == btnRecordSearch) {
+            logger.info("Entering record search");
             RecordSearch rs = new RecordSearch(frame);
             rs.setModal(true);
             rs.setVisible(true);
         } else if (ae.getSource() == btnShowList) {
+            logger.info("Entering show list");
             ShowList sl = new ShowList(frame);
             sl.setModal(true);
             sl.setVisible(true);
 
         } else if (ae.getSource() == btnChangeRecord) {
+            logger.info("Entering change record");
             ChangeRecord cr = new ChangeRecord(frame);
             cr.setModal(true);
             cr.setVisible(true);
         } else if (ae.getSource() == btnStatistics) {
+            logger.info("Entering statistics");
             Statistics sts = new Statistics(frame);
             sts.setModal(true);
             sts.setVisible(true);
         } else if (ae.getSource() == btnExit) {
+            logger.info("Program Exits");
             System.exit(0);
         }
     }

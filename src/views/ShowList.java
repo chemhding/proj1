@@ -37,6 +37,9 @@ public class ShowList extends JDialog {
     private JScrollPane scrollPane;
     private JRadioButton rdbtnGrade;
 
+    /*
+     * Create window
+     */
     public ShowList(JFrame parent) {
         setTitle("Show List");
         initialize(parent);
@@ -47,13 +50,21 @@ public class ShowList extends JDialog {
         hwWeight = sw.getHwWgt();
         projWeight = sw.getProjWgt();
         examWeight = sw.getExamWgt();
+
+        // -------------------------------------listeners-------------------------------------
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        /*
+         * Radio button sort list by class, site, last name
+         * Shows a student list sorted in the priority of
+         * class name, site number, last name and first name
+         */
         rdbtnSortedListBy.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (rdbtnSortedListBy.isSelected()) {
                     FileScanner fileScan = new FileScanner("src/resources/class_roster.txt",
-                            "src/resources/fakedata.txt");
+                            "src/resources/students_grades.txt");
                     ArrayList<Student> results = fileScan.rankByClassSiteLastName();
 
                     tbShowList = new JTable();
@@ -80,13 +91,16 @@ public class ShowList extends JDialog {
             }
         });
 
+        /*
+         * Radio button rank by total score
+         * generates information ranked by total score
+         */
         rdbtnTotalScore.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (rdbtnTotalScore.isSelected()) {
                     FileScanner fileScan = new FileScanner("src/resources/class_roster.txt",
-                            "src/resources/fakedata.txt");
+                            "src/resources/students_grades.txt");
                     ArrayList<Student> results = fileScan.rankByTotalScore(hwWeight, projWeight, examWeight);
 
                     tbShowList = new JTable();
@@ -114,13 +128,15 @@ public class ShowList extends JDialog {
             }
         });
 
+        /*
+         * Radio button rank by homework average
+         */
         rdbtnHwAvg.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (rdbtnHwAvg.isSelected()) {
                     FileScanner fileScan = new FileScanner("src/resources/class_roster.txt",
-                            "src/resources/fakedata.txt");
+                            "src/resources/students_grades.txt");
                     ArrayList<Student> results = fileScan.rankByHwAvg();
 
                     tbShowList = new JTable();
@@ -148,6 +164,9 @@ public class ShowList extends JDialog {
             }
         });
 
+        /*
+         * Radio button rank by project average
+         */
         rdbtnProjAvg.addActionListener(new ActionListener() {
 
             @Override
@@ -182,6 +201,9 @@ public class ShowList extends JDialog {
             }
         });
 
+        /*
+         * Radio button ranked by grade
+         */
         rdbtnGrade.addActionListener(new ActionListener() {
 
             @Override
@@ -215,8 +237,12 @@ public class ShowList extends JDialog {
                 }
             }
         });
+        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
+    /*
+     * Initialize the window
+     */
     public void initialize(JFrame parent) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 520);
@@ -271,17 +297,7 @@ public class ShowList extends JDialog {
                         .addPreferredGap(ComponentPlacement.UNRELATED)
                         .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)));
 
-        // tbShowList = new JTable();
-        // tbShowList.setModel(new DefaultTableModel(new Object[][] {}, columnName) {
-        // @Override
-        // public boolean isCellEditable(int row, int column) {
-        // return false;
-        // }
-        // });
-        // tbShowList.setCellSelectionEnabled(true);
-        // scrollPane.setViewportView(tbShowList);
         contentPane.setLayout(gl_contentPane);
         setLocationRelativeTo(parent);
-
     }
 }

@@ -4,9 +4,19 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import common.BSTree.Traversal;
 //import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
+import views.Main;
 
+/*
+ * FileScanner class is responsible for scanning both two files
+ * By default is "class_roster.txt" and "students_grades.txt"
+ * Transfer file data to courses array list, and students array list
+ * Manipulate the array lists while keep the data file remain the same.
+ */
 public class FileScanner {
     private Scanner scan;
     private String pathCourse;
@@ -14,6 +24,23 @@ public class FileScanner {
     private ArrayList<Course> courses = new ArrayList<Course>();
     private ArrayList<Student> students = new ArrayList<Student>();
 
+    private static Logger logger = LogManager.getLogger(Main.class);
+
+    // Default constructor
+    public FileScanner() {
+        try {
+            pathCourse = "src/resources/class_roster.txt";
+            pathStudent = "src/resources/studnets_grades";
+            scan = new Scanner(new File(pathCourse));
+            scanCourse();
+            scan = new Scanner(new File(pathStudent));
+            scanStudents();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Overload constructer
     public FileScanner(String pathCourse, String pathStudent) {
         try {
             this.pathCourse = pathCourse;
@@ -23,12 +50,15 @@ public class FileScanner {
             scan = new Scanner(new File(pathStudent));
             scanStudents();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    /*
+     * Scan course file and generate a courses array list
+     */
     public ArrayList<Course> scanCourse() {
+        logger.info("Scan Course file");
         while (scan.hasNextLine()) {
             if (scan.hasNext()) {
                 String className = scan.next();
@@ -41,16 +71,18 @@ public class FileScanner {
                     students[i] = scan.nextInt();
                 Course course = new Course(className, homework, projects, exams, sites);
                 course.setStudents(students);
-                // System.out.println(course);
                 courses.add(course);
-                // System.out.println(courses.size());
             }
             scan.nextLine();
         }
         return courses;
     }
 
+    /*
+     * Scan students file and generate a students array list
+     */
     public ArrayList<Student> scanStudents() {
+        logger.info("Scan Students file");
         while (scan.hasNextLine()) {
             if (scan.hasNext()) {
                 String firstName = scan.next();
@@ -85,7 +117,11 @@ public class FileScanner {
 
     }
 
+    /*
+     * Find class name from course array list
+     */
     public Course find(String className) {
+        logger.info("find class name from course");
         for (int i = 0; i < courses.size(); i++) {
             if (courses.get(i).getClassName().equalsIgnoreCase(className))
                 return courses.get(i);
@@ -93,6 +129,8 @@ public class FileScanner {
         return null;
     }
 
+    // -------------------------Getters-------------------------
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     public ArrayList<Course> getCourses() {
         return courses;
     }
@@ -108,8 +146,14 @@ public class FileScanner {
     public String getPathStudent() {
         return pathStudent;
     }
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+    /*
+     * Sort course list and copy data to 
+     * binary search tree data structured list
+     */
     public BSTree<Course> sortCourses() {
+        logger.info("Sort Courses");
         BSTree<Course> coursesTree = new BSTree<Course>(new Comparator<Course>() {
             @Override
             public int compare(Course course1, Course course2) {
@@ -121,7 +165,14 @@ public class FileScanner {
         return coursesTree;
     }
 
+    /*
+     * Sort students list by sort type parameter
+     * copy students data from student array list
+     * sort by different comparator and add to a 
+     * binary search tree structure
+     */
     public BSTree<Student> sortStudents(SortType sorttype) {
+        logger.info("Sort students");
         Comparator<Student> comp;
         if (sorttype == SortType.FirstName) {
             comp = new Comparator<Student>() {
@@ -163,19 +214,17 @@ public class FileScanner {
         return studentsTree;
     }
 
+    /*
+     * Search students by student first name, last name or student ID
+     */
     public ArrayList<Student> searchStudents(String key, SortType sorttype) {
+        logger.info("Search students");
         ArrayList<Student> results = new ArrayList<Student>();
         BSTree<Student> studentsTree = sortStudents(sorttype);
-        // System.out.println(studentsTree.iterativeSize());
         Iterator<Student> iter = studentsTree.getIterator(BSTree.Traversal.Inorder);
-        // while (iter.hasNext())
-        // System.out.println(iter.next());
-        // System.out.println("----------FileScanner 170-----------");
         if (sorttype == SortType.FirstName) {
-            System.out.println("test before searchstudents while loop");
             while (iter.hasNext()) {
                 Student student = iter.next();
-                // System.out.println("filescannerclass171" + student);
                 if (key.compareToIgnoreCase(student.getFirstName()) == 0)
                     results.add(student);
                 if (key.compareToIgnoreCase(student.getFirstName()) < 0)
@@ -201,7 +250,11 @@ public class FileScanner {
         return results;
     }
 
+    /*
+     * Generate a student array list sorted by first name
+     */
     public ArrayList<Student> SortedStudentsArrayList() {
+        logger.info("Sort by first name");
         ArrayList<Student> results = new ArrayList<Student>();
         BSTree<Student> studentsTree = sortStudents(SortType.FirstName);
         Iterator<Student> iter = studentsTree.getIterator(BSTree.Traversal.Inorder);
@@ -210,7 +263,11 @@ public class FileScanner {
         return results;
     }
 
+    /*
+     * Generate a student array list sorted by class, site and last name
+     */
     public ArrayList<Student> rankByClassSiteLastName() {
+        logger.info("Sort by class site and last name");
         ArrayList<Student> results = new ArrayList<Student>();
         Comparator<Student> comp = new Comparator<Student>() {
             @Override
@@ -241,7 +298,11 @@ public class FileScanner {
         return results;
     }
 
+    /*
+     * Generate a student array list sorted by homework average
+     */
     public ArrayList<Student> rankByHwAvg() {
+        logger.info("Sort by homework average");
         ArrayList<Student> results = new ArrayList<Student>();
         Comparator<Student> comp = new Comparator<Student>() {
             @Override
@@ -272,7 +333,11 @@ public class FileScanner {
         return results;
     }
 
+    /*
+     * Generate a student array list sorted by project average
+     */
     public ArrayList<Student> rankByProjAvg() {
+        logger.info("Rank by project average");
         ArrayList<Student> results = new ArrayList<Student>();
         Comparator<Student> comp = new Comparator<Student>() {
             @Override
@@ -303,7 +368,11 @@ public class FileScanner {
         return results;
     }
 
+    /*
+     * Generate a student array list sorted by exam average
+     */
     public ArrayList<Student> rankByExamAvg() {
+        logger.info("Rank by exam average");
         ArrayList<Student> results = new ArrayList<Student>();
         Comparator<Student> comp = new Comparator<Student>() {
             @Override
@@ -338,6 +407,7 @@ public class FileScanner {
     // @param j project weight
     // @param k exam weight
     public ArrayList<Student> rankByTotalScore(int i, int j, int k) {
+        logger.info("Rank by total score");
         ArrayList<Student> results = new ArrayList<Student>();
         Comparator<Student> comp = new Comparator<Student>() {
             @Override
@@ -372,6 +442,7 @@ public class FileScanner {
     // @param j project weight
     // @param k exam weight
     public ArrayList<Student> rankByGrade(int i, int j, int k) {
+        logger.info("Rank by grade");
         ArrayList<Student> results = new ArrayList<Student>();
         Comparator<Student> comp = new Comparator<Student>() {
             @Override
@@ -402,8 +473,11 @@ public class FileScanner {
         return results;
     }
 
+    /*
+     * Generate an array list sorted by grade of each class
+     */
     public ArrayList<String[]> gradesPerClass() {
-
+        logger.info("Grades for each class");
         ArrayList<Student> students = rankByClassSiteLastName();
         ArrayList<String[]> classGrades = new ArrayList<String[]>();
         String tempClassName = students.get(0).getCourse().getClassName();
@@ -437,8 +511,11 @@ public class FileScanner {
         return classGrades;
     }
 
+    /*
+     * Generate an array list that has grades per site
+     */
     public ArrayList<int[]> classDetailedGrades(String className) {
-
+        logger.info("Detailed grades");
         ArrayList<Student> students = rankByClassSiteLastName();
         ArrayList<int[]> classGrades = new ArrayList<int[]>();
         int i = 0;
@@ -446,8 +523,6 @@ public class FileScanner {
 
         int totalHwGrade = 0, totalProjGrade = 0, totalExamGrade = 0, totalScore = 0;
         boolean found = false, stop = false;
-        System.out.println(students.get(0).getSiteNum());
-        System.out.println(students.get(7).getSiteNum());
         while (i < students.size() && !stop) {
             if (className.equalsIgnoreCase(students.get(i).getCourse().getClassName())) {
                 if (!found)
@@ -463,7 +538,6 @@ public class FileScanner {
             i++;
         }
         int j = foundIndex;
-        System.out.println(foundIndex + " " + stopIndex);
         int numPerSite = 0;
         int tempSiteNum = students.get(j).getSiteNum();
         while (j <= stopIndex) {
@@ -494,8 +568,11 @@ public class FileScanner {
         return classGrades;
     }
 
+    /*
+     * Generate an array list contains each grade percentage
+     */
     public ArrayList<String[]> gradePercentage() {
-
+        logger.info("Grade percentage");
         ArrayList<Student> students = rankByClassSiteLastName();
         ArrayList<String[]> classGrades = new ArrayList<String[]>();
         String tempClassName = students.get(0).getCourse().getClassName();
@@ -518,7 +595,6 @@ public class FileScanner {
                         fmt.format((double) BNum / numPerClass * 100) + "%",
                         fmt.format((double) CNum / numPerClass * 100) + "%",
                         fmt.format((double) ENum / numPerClass * 100) + "%" };
-                System.out.println(ANum + " " + BNum + " " + CNum + " " + ENum + " " + numPerClass);
                 classGrades.add(temp);
                 tempClassName = students.get(i).getCourse().getClassName();
                 ANum = 0;
@@ -545,20 +621,6 @@ public class FileScanner {
 
         return classGrades;
     }
-
-    // public static void main(String[] args) {
-    // FileScanner fs = new FileScanner("src/resources/class_roster.txt",
-    // "src/resources/fakedata.txt");
-    // System.out.println(fs.courses.size() + " " + fs.students.size());
-    // System.out.println(fs.courses.get(2));
-    // System.out.println(fs.students.get(456));
-    // System.out.println(fs.students.get(3));
-    // ArrayList<Student> searchResults = fs.searchStudents("Akira",
-    // SortType.FirstName);
-    // System.out.println(searchResults.size());
-    // for (int i = 0; i < 239; i++)
-    // System.out.println(searchResults.get(i));
-    // }
 
     public enum SortType {
         FirstName, LastName, SID;

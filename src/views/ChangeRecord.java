@@ -14,6 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import common.Course;
 import common.FileScanner;
 import common.Student;
@@ -43,6 +46,7 @@ public class ChangeRecord extends JDialog {
          * add record to the end of default destination file
          */
         btnAddRecord.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 String input1 = JOptionPane.showInputDialog(contentPane,
