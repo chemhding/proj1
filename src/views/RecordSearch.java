@@ -68,7 +68,7 @@ public class RecordSearch extends JDialog {
     public void initialize(JFrame parent) {
         contentPane = new JPanel();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(600, 520);
+        setSize(700, 520);
         setResizable(false);
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
